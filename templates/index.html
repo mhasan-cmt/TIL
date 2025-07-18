@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown Editor</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; max-width: 900px; margin: auto; }
+    textarea { width: 100%; height: 400px; font-family: monospace; font-size: 14px; }
+    input, select { padding: 8px; margin: 4px 0; width: 100%; }
+    button { padding: 10px 20px; margin-top: 10px; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h2>📄 Today I Learned - Markdown File Editor</h2>
+
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <form method="get" action="/">
+    <label>Select file to edit:</label>
+    <select name="file" onchange="this.form.submit()">
+      <option value="">-- Select --</option>
+      {% for f in file_list %}
+        <option value="{{ f }}" {% if f == file %}selected{% endif %}>{{ f }}</option>
+      {% endfor %}
+    </select>
+  </form>
+
+  <form method="post" action="/save">
+    <label>File path (can be new):</label>
+    <input name="file" value="{{ file or '' }}" required>
+
+    <label>Markdown content:</label>
+    <textarea name="content">{{ content or '' }}</textarea>
+
+    <button type="submit">💾 Save to GitHub</button>
+  </form>
+
+  <p>📘 After saving, GitBook will auto-sync from the branch.</p>
+</body>
+</html>
